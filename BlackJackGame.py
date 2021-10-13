@@ -5,7 +5,6 @@ figures=("Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","
 cards_and_values={'Two':2,"Three":3,"Four":4,"Five":5,"Six":6,"Seven":7,"Eight":8,"Nine":9,"Ten":10,"Jack":10,"Queen":10,"King":10,"Ace":[1,11]}
 
 class Card():
-    
     def __init__(self,color_card,figure):
         self.color_card=color_card
         self.figure=figure
@@ -53,25 +52,28 @@ class Player():
     
     def add_card(self,card,deck):
         self.player_cards.append(card)
+        self.sum_value_of_cards()
         deck.pop(0)
     
     def sum_value_of_cards(self):
-        sum_up = 0
+        sum_up=0
         for x in range(0,len(self.player_cards),1):
-            sum_up=self.player_cards[x].value
-        return sum_up
+           sum_up+=self.player_cards[x].value
+        self.value_of_player_cards=sum_up
 
-    def hit_or_stay(self,card):
+    def hit_or_stay(self,card,deck):
         print(self.player_cards)
-        choice=input("Do you hit or stay ?").upper
-        loop =True
+        loop=True
         while loop:
+            choice=input("Do you hit or stay? Enter(HIT OR STAY) : ")
             if choice=="HIT":
-                self.add_card(card)
+                print('You added new card to your deck :')
+                self.add_card(card,deck)
                 loop=False
                 return True
             elif choice=='STAY':
-                self.sum_value_of_cards()
+                print('You stay with those cards :')
+                print(self.player_cards)
                 loop=False
                 return False
             else:
@@ -84,42 +86,43 @@ class Dealer():
     
     def add_card(self,card,deck):
         self.dealer_cards.append(card)
+        self.sum_value_of_cards()
         deck.pop(0)
     
     def sum_value_of_cards(self):
-        sum_up = 0
-        for x in range(0,len(self.dealer_cards),1):
-            sum_up=self.dealer_cards[x].value
-        return sum_up
+        sum_up=0
+        for y in range(0,len(self.dealer_cards),1):
+            sum_up+=self.dealer_cards[y].value
+        self.value_of_dealer_cards=sum_up
 
-    def checking_cards(self,card):
-        if self.value_of_dealer_cards <=16:
+    def checking_cards(self,card,deck):
+        if self.value_of_dealer_cards <= 16:
             print("Dealer hit")
-            self.add_card(card)
+            self.add_card(card,deck)
           
-
 def main():
     my_deck = Deck()
     my_deck.create_deck_cards()
     my_deck.shuffle()
     player = Player("Bartek")
-    print(len(my_deck.all_of_cards))
+    dealer = Dealer()
     x=0
     while x<2:
         print(f"{x+1} hand")
-        player.add_card(my_deck.all_of_cards[x],my_deck.all_of_cards)
+        player.add_card(my_deck.all_of_cards[0],my_deck.all_of_cards)
         print("Player Cards: ")
         print(player.player_cards)
         print('')
-        dealer = Dealer()
-        dealer.add_card(my_deck.all_of_cards[x],my_deck.all_of_cards)
+        dealer.add_card(my_deck.all_of_cards[0],my_deck.all_of_cards)
         print("Dealer card:")
         print(dealer.dealer_cards[0])
         print('')
         x+=1
     is_hit_or_stay=True
     while is_hit_or_stay:    
-        is_hit_or_stay=player.hit_or_stay(my_deck.all_of_cards[0])
-        
-
+        is_hit_or_stay=player.hit_or_stay(my_deck.all_of_cards[0],my_deck.all_of_cards)
+    print(dealer.value_of_dealer_cards)
+    dealer.checking_cards(my_deck.all_of_cards[0],my_deck.all_of_cards)
+    print(dealer.dealer_cards)
+    print(dealer.value_of_dealer_cards)
 main()
