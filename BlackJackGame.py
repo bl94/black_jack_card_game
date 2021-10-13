@@ -47,7 +47,7 @@ class Player():
         return len(self.player_cards)
     
     def add_card(self,card,deck):
-        self.player_cards.append(card)      #we can try to add in new line: self.value_of_player_cards +=card.value
+        self.player_cards.append(card)      
         self.value_of_player_cards+=card.value
         deck.pop(0)
     
@@ -78,16 +78,12 @@ class Player():
             else:
                 print("Wrong text.Try again")
 
-    def checking_cards(self):               #May add another method for checking Ace in play_cards
+    def final_checking_cards(self):              
         cards_list=[x.figure for x in self.player_cards]
-        if "Ace" in [cards_list]:
-            try:
-                Ace_value = int(input('What value prefer to Ace? 1 or 11'))
-                self.value_of_player_cards+=Ace_value
-            except ValueError:
-                print("You enter wrong number")
-            except:
-                print("You enter unfamiliar character")
+        x=0
+        while x<=cards_list.count("Ace") and self.value_of_player_cards>21:
+            self.value_of_player_cards-=10
+            x+=1
 
 class Dealer():
     def __init__(self):
@@ -96,23 +92,22 @@ class Dealer():
     
     def add_card(self,card,deck):
         self.dealer_cards.append(card)
-        self.case_of_Ace_drawing()
+        self.case_of_ace_in_dealer_cards()
         self.value_of_dealer_cards+=card.value
         deck.pop(0)
 
-    def case_of_Ace_drawing(self):
+    def case_of_ace_in_dealer_cards(self):
         cards_list=[x.figure for x in self.dealer_cards]
         how_many_aces_in_dealer_cards=cards_list.count("Ace")
         if how_many_aces_in_dealer_cards>1:                
             self.value_of_dealer_cards-=(how_many_aces_in_dealer_cards-1)*10
 
     def checking_cards(self,card,deck):
-        self.case_of_Ace_drawing()
         while self.value_of_dealer_cards <= 16:
             print("Dealer hit")
             print("")
             self.add_card(card,deck)
-            self.case_of_Ace_drawing()
+           
 
 class GameLogic():
     def __init__(self):
@@ -147,6 +142,7 @@ def main():
     game_on=True
     while game_on:
         my_deck = Deck()
+        #my_deck.create_deck_cards()
         my_deck.create_deck_cards()
         my_deck.shuffle()
         player = Player()
@@ -170,7 +166,7 @@ def main():
         dealer.checking_cards(my_deck.all_of_cards[0],my_deck.all_of_cards)
         print("Dealer cards: ")
         print(dealer.dealer_cards)
-        player.checking_cards()
+        player.final_checking_cards()
         print("")
         GameLogic.who_win(player,dealer)
         print("")
