@@ -2,7 +2,7 @@ from random import shuffle
 
 color=("Spades","Hearts","Clubs","Diamonds")
 figures=("Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King","Ace")
-cards_and_values={'Two':2,"Three":3,"Four":4,"Five":5,"Six":6,"Seven":7,"Eight":8,"Nine":9,"Ten":10,"Jack":10,"Queen":10,"King":10,"Ace":0}
+cards_and_values={'Two':2,"Three":3,"Four":4,"Five":5,"Six":6,"Seven":7,"Eight":8,"Nine":9,"Ten":10,"Jack":10,"Queen":10,"King":10,"Ace":11}
 
 class Card():
     def __init__(self,color_card,figure):
@@ -96,21 +96,23 @@ class Dealer():
     
     def add_card(self,card,deck):
         self.dealer_cards.append(card)
+        self.case_of_Ace_drawing()
         self.value_of_dealer_cards+=card.value
         deck.pop(0)
 
-    def case_of_Ace_drawing():
-        
+    def case_of_Ace_drawing(self):
+        cards_list=[x.figure for x in self.dealer_cards]
+        how_many_aces_in_dealer_cards=cards_list.count("Ace")
+        if how_many_aces_in_dealer_cards>1:                
+            self.value_of_dealer_cards-=(how_many_aces_in_dealer_cards-1)*10
 
     def checking_cards(self,card,deck):
-        cards_list=[x.figure for x in self.dealer_cards] 
-        if "Ace" in [cards_list]:
-           if self.value_of_dealer_cards <=10:
-               self.value_of_dealer_cards+=11
-        if self.value_of_dealer_cards <= 16:
+        self.case_of_Ace_drawing()
+        while self.value_of_dealer_cards <= 16:
             print("Dealer hit")
             print("")
             self.add_card(card,deck)
+            self.case_of_Ace_drawing()
 
 class GameLogic():
     def __init__(self):
