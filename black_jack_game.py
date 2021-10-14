@@ -1,8 +1,10 @@
 from random import shuffle
+import os
 #properties of cards
 color=("Spades","Hearts","Clubs","Diamonds")
 figures=("Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King","Ace")
-cards_and_values={'Two':2,"Three":3,"Four":4,"Five":5,"Six":6,"Seven":7,"Eight":8,"Nine":9,"Ten":10,"Jack":10,"Queen":10,"King":10,"Ace":11}
+cards_and_values={'Two':2,"Three":3,"Four":4,"Five":5,"Six":6,"Seven":7,"Eight":8,"Nine":9,\
+"Ten":10,"Jack":10,"Queen":10,"King":10,"Ace":11}
 
 class Card():
     def __init__(self,color_card,figure):
@@ -16,12 +18,12 @@ class Card():
 
     #method showing name of object in the list
     def __repr__(self):
-        return self.__str__()    
+        return self.__str__()
 
 class Deck():
     def __init__(self):
         self.all_of_cards =[]
-        
+
     #how many cards are in the deck
     def __len__(self):
         return len(self.all_of_cards)
@@ -32,28 +34,28 @@ class Deck():
             for y in figures:
                 new_card=Card(x,y)
                 self.all_of_cards.append(new_card)
-    
+
     #shuffle deck
     def shuffle(self):
         shuffle(self.all_of_cards)
-    
+
     #remove card from the top of the deck
     def remove_cards(self):
-       self.all_of_cards.pop(0)
+        self.all_of_cards.pop(0)
 
 class Player():
     def __init__(self):
         self.player_cards=[]
         self.value_of_player_cards=0
-    
+
     #how many cards are in the player's hand
     def __len__(self):
         return len(self.player_cards)
 
-    #deal card to player 
+    #deal card to player
     #and removce card from the deck
     def add_card(self,card,deck):
-        self.player_cards.append(card)      
+        self.player_cards.append(card)    
         self.value_of_player_cards+=card.value
         deck.remove_cards()
 
@@ -87,7 +89,7 @@ class Player():
     #check has player got aces in hand
     #if player has got ace/s and value of cards in hand exceed 21
     #reduce value of player's cards by 10
-    def final_checking_cards(self):         
+    def final_checking_cards(self):
         cards_list=[x.figure for x in self.player_cards if x.figure=="Ace"]
         x=0
         while x<=cards_list.count("Ace") and self.value_of_player_cards>21:
@@ -99,7 +101,7 @@ class Dealer():
         self.dealer_cards=[]
         self.value_of_dealer_cards=0
 
-    #deal card to player 
+    #deal card to player
     def add_card(self,card,deck):
         self.dealer_cards.append(card)
         self.case_of_ace_in_dealer_cards()
@@ -111,7 +113,7 @@ class Dealer():
     def case_of_ace_in_dealer_cards(self):
         cards_list=[x.figure for x in self.dealer_cards]
         how_many_aces_in_dealer_cards=cards_list.count("Ace")
-        if how_many_aces_in_dealer_cards>1:                
+        if how_many_aces_in_dealer_cards>1:
             self.value_of_dealer_cards-=(how_many_aces_in_dealer_cards-1)*10
 
     #check Do value of dealer's cards exceed 16
@@ -121,16 +123,14 @@ class Dealer():
             print("Dealer hit")
             print("")
             self.add_card(card,deck)
-           
+
 class GameLogic():
-    def __init__(self):
-        self  
 
     #check who win
     #if value of player's or dealer's cards exceed 21, they will lose
-    #if value of player's cards is closer 21 than value of dealer's cards, player win 
+    #if value of player's cards is closer 21 than value of dealer's cards, player win
     #and exactly the same in backward
-    #if value of player's cards is equal to value of dealer's cards is draw  
+    #if value of player's cards is equal to value of dealer's cards is draw
     def who_win(player,dealer):
         if player.value_of_player_cards > 21:
             print("Buzz. Value of your cards exceed 21. Dealer win")
@@ -176,7 +176,7 @@ def main():
             print("Player Cards: ")
             print(player.player_cards)
             dealer.add_card(my_deck.all_of_cards[0],my_deck)
-            #player see only first dealer's card but after the second hand 
+            #player see only first dealer's card but after the second hand
             if x==1:
                 print("")
                 print("Dealer card:")
@@ -184,9 +184,10 @@ def main():
                 print('')
             x+=1
         is_hit_or_stay=True
-        #loop in which there is method HIT or STAY, if player selects HIT, he will draw a card from the deck
-        #if he selects STAY, he will stay with these cards that we have in hand
-        while is_hit_or_stay:    
+        #loop in which there is method HIT or STAY,if player selects HIT, 
+        #he will draw a card from the deck
+        #if he selects STAY,he will stay with these cards that we have in hand
+        while is_hit_or_stay:
             is_hit_or_stay=player.hit_or_stay(my_deck.all_of_cards[0],my_deck)
         #check Do value of dealer's cards exceed 16
         #if value 0f dealer's cards is lower or equal to 16, dealer draw a card
@@ -201,6 +202,10 @@ def main():
         print("")
         #Game Logic check Does player want to play again?
         game_on=GameLogic.play_again()
-    
-main()
 
+#main()
+old_name = r"C:\Users\Bartlomiej Lepa\Desktop\Projects\BlackJackGame\BlackJackGame.py"
+new_name = r"C:\Users\Bartlomiej Lepa\Desktop\Projects\BlackJackGame\black_jack_game.py"
+
+# Renaming the file
+os.rename(old_name, new_name)

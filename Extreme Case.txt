@@ -1,0 +1,1 @@
+[Card('Spades',"Seven"),Card('Hearts',"Ace"),Card('Clubs',"Eight"),Card('Clubs',"Ace"),Card('Spades',"Ace"),Card('Diamonds',"Ace"),Card('Diamonds',"Seven"),Card('Diamonds',"Seven")])
