@@ -23,8 +23,10 @@ class Card():
     def __str__(self):
         return f"{self.figure} {self.color_card}"
 
-    #method showing name of object in the list
     def __repr__(self):
+        """
+        method showing name of object in the list
+        """
         return self.__str__()
 
 class Deck():
@@ -88,6 +90,7 @@ class Player():
         """
         print("Player Cards: ")
         print(self.player_cards)
+        result_hit_or_stay=""
         loop=True
         while loop:
             #player select from 2 options(HIT OR STAY)
@@ -98,7 +101,7 @@ class Player():
                 #if we select HIT, we will draw a card from the deck
                 self.add_card(card,deck)
                 loop=False
-                return True
+                result_hit_or_stay=True
             elif choice=='STAY':
                 #if we select STAY, we will stay with these cards that we have got in hand
                 print("")
@@ -106,13 +109,11 @@ class Player():
                 print(self.player_cards)
                 print("")
                 loop=False
-                return False
+                result_hit_or_stay=False
             else:
                 print("Wrong text.Try again")
+        return result_hit_or_stay
 
-    #check has player got aces in hand
-    #if player has got ace/s and value of cards in hand exceed 21
-    #reduce value of player's cards by 10
     def final_checking_cards(self):
         """
         check has player got aces in hand
@@ -152,8 +153,6 @@ class Dealer():
         if how_many_aces_in_dealer_cards>1:
             self.value_of_dealer_cards-=(how_many_aces_in_dealer_cards-1)*10
 
-    #check Do value of dealer's cards exceed 16
-    #if value 0f dealer's cards is lower or equal to 16, dealer draw a card
     def checking_cards(self,card,deck):
         """
         check Do value of dealer's cards exceed 16
@@ -168,12 +167,8 @@ class GameLogic():
     """
     CLASS GAME LOGIC
     """
-    #check who win
-    #if value of player's or dealer's cards exceed 21, they will lose
-    #if value of player's cards is closer 21 than value of dealer's cards, player win
-    #and exactly the same in backward
-    #if value of player's cards is equal to value of dealer's cards is draw
-    def who_win(self,player,dealer):
+    @staticmethod
+    def who_win(player,dealer):
         """
         check who win
         if value of player's or dealer's cards exceed 21, they will lose
@@ -193,20 +188,23 @@ class GameLogic():
             else:
                 print("Draw")
 
-    def play_again(self):
+    @staticmethod
+    def play_again():
         """
         check does player wants to play again
         """
         play_or_not_play=""
+        result_play_or_not_play=""
         while play_or_not_play not in ["Y","N"]:
             play_or_not_play=input("Do you want play again? Y or N : ")
             if play_or_not_play=="Y":
-                return True
+                result_play_or_not_play=True
             elif play_or_not_play=='N':
                 print("Game over")
-                return False
+                result_play_or_not_play=False
             else:
                 print("You enter unfamiliar character")
+        return result_play_or_not_play
 
 def main():
     """
@@ -252,10 +250,9 @@ def main():
         player.final_checking_cards()
         print("")
         #Game Logic check who win
-        game_logic=GameLogic()
-        game_logic.who_win(player,dealer)
+        GameLogic.who_win(player,dealer)
         print("")
         #Game Logic check Does player want to play again?
-        game_on=game_logic.play_again()
+        game_on=GameLogic.play_again()
 
 main()
