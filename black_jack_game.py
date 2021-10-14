@@ -17,8 +17,7 @@ class Card():
     def __init__(self,color_card,figure):
         self.color_card=color_card
         self.figure=figure
-        #value of card,the higher card has higher the value
-        self.value = cards_and_values[figure]
+        self.value = cards_and_values[figure]#value of card,the higher card has higher the value
 
     def __str__(self):
         return f"{self.figure} {self.color_card}"
@@ -36,8 +35,10 @@ class Deck():
     def __init__(self):
         self.all_of_cards =[]
 
-    #how many cards are in the deck
     def __len__(self):
+        """
+        #how many cards are in the deck
+        """
         return len(self.all_of_cards)
 
     def create_deck_cards(self):
@@ -93,17 +94,14 @@ class Player():
         result_hit_or_stay=""
         loop=True
         while loop:
-            #player select from 2 options(HIT OR STAY)
-            choice=input("Do you hit or stay? Enter (HIT OR STAY) : ")
+            choice=input("Do you hit or stay? Enter (HIT OR STAY) : ") #player select from 2 options(HIT OR STAY)
             print("")
-            if choice=="HIT":
+            if choice=="HIT":#if we select HIT, we will draw a card from the deck
                 print('You added new card to your deck :')
-                #if we select HIT, we will draw a card from the deck
                 self.add_card(card,deck)
                 loop=False
                 result_hit_or_stay=True
-            elif choice=='STAY':
-                #if we select STAY, we will stay with these cards that we have got in hand
+            elif choice=='STAY':#if we select STAY, we will stay with these cards that we have got in hand
                 print("")
                 print('You stay with those cards :')
                 print(self.player_cards)
@@ -213,13 +211,10 @@ def main():
     game_on=True
     while game_on:
         my_deck = Deck()
-        #create deck of cards
-        my_deck.create_deck_cards()
-        #shuffle deck
-        my_deck.shuffle()
-        #create player and dealer
-        player = Player()
-        dealer = Dealer()
+        my_deck.create_deck_cards()#create deck of cards
+        my_deck.shuffle()#shuffle deck
+        player = Player()#create player
+        dealer = Dealer()#create dealer
         hand=0
         #loop in which we deal cards
         while hand<2:
@@ -228,8 +223,7 @@ def main():
             print("Player Cards: ")
             print(player.player_cards)
             dealer.add_card(my_deck.all_of_cards[0],my_deck)
-            #player see only first dealer's card but after the second hand
-            if hand==1:
+            if hand==1:#player see only first dealer's card but after the second hand
                 print("")
                 print("Dealer card:")
                 print(dealer.dealer_cards[0])
@@ -242,17 +236,14 @@ def main():
         while is_hit_or_stay:
             is_hit_or_stay=player.hit_or_stay(my_deck.all_of_cards[0],my_deck)
         #check Do value of dealer's cards exceed 16
-        #if value 0f dealer's cards is lower or equal to 16, dealer draw a card
+        #if value of dealer's cards is lower or equal to 16, dealer draw a card
         dealer.checking_cards(my_deck.all_of_cards[0],my_deck)
         print("Dealer cards: ")
         print(dealer.dealer_cards)
-        #check has player got aces in hand
-        player.final_checking_cards()
+        player.final_checking_cards()#check has player got aces in hand
         print("")
-        #Game Logic check who win
-        GameLogic.who_win(player,dealer)
+        GameLogic.who_win(player,dealer)#Game Logic check who win
         print("")
-        #Game Logic check Does player want to play again?
-        game_on=GameLogic.play_again()
+        game_on=GameLogic.play_again()#Game Logic check Does player want to play again?
 
 main()
